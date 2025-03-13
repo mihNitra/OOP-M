@@ -99,6 +99,7 @@ def addBook():
 # Function to check all books in the library
 def checkLibrary():
     if not addBooks:
+        print('')
         print("\t\t\t   -------> NO BOOKS IN LIBRARY <-------\n")
         return
 
@@ -232,6 +233,7 @@ def export_to_excel():
 
     # Save and close the workbook
     workbook.close()
+    print('')
     print("---> Books exported to LibraryBooks.xlsx successfully!\n")
 
 
@@ -241,7 +243,7 @@ def manageLibrary():
         print(
             "===================================================== LIBRARY MANAGEMENT ====================================================")
         print(
-            "\t1. ADD BOOK\t2. CHECK LIBRARY\t3. SEARCH BOOK\t4. UPDATE BOOK\t5. REMOVE BOOK\t6. EXPORT BOOKS\t7. EXIT")
+            "    1. ADD BOOK    2. CHECK LIBRARY    3. SEARCH BOOK    4. UPDATE BOOK    5. REMOVE BOOK    6. EXPORT BOOKS   7. EXIT")
         print(
             "======================================================== INSTRUCTION ========================================================")
 
