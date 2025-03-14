@@ -315,33 +315,33 @@ def manageLibrary(username, current_time):
         print(" ")
 
         if option == 1:
-            print("\t\t\t   ------------> ADD BOOKS <------------")
+            print("\t\t   ------------> ADD BOOKS <------------")
             num_books = get_input("- Enter number of books to add\t.\t.\t.\t.\t.\t: ", int)
             if num_books is None:  # User cancelled
                 continue
                 
             books_added = 0
             for i in range(num_books):
-                print(f"\n\t\t\t   --------> Enter Book {i + 1} Data <--------")
+                print(f"\n\t\t   -------> Enter Book {i + 1} Data <--------")
                 if addBook():
                     books_added += 1
                 else:
                     print(f"---> Book addition cancelled. Added {books_added} of {num_books} books.\n")
                     break
         elif option == 2:
-            print("\t\t\t   ------------ CHECK BOOKS <-----------")
+            print("\t\t   -----------> CHECK BOOKS <-----------")
             checkLibrary()
         elif option == 3:
-            print("\t\t\t   ------------ SEARCH BOOK <-----------")
+            print("\t\t   -----------> SEARCH BOOK <-----------")
             searchBook()
         elif option == 4:
-            print("\t\t\t   -----------> UPDATE BOOK <-----------")
+            print("\t\t   -----------> UPDATE BOOK <-----------")
             updateBook()
         elif option == 5:
-            print("\t\t\t   -----------> REMOVE BOOK <-----------")
+            print("\t\t   -----------> REMOVE BOOK <-----------")
             removeBook()
         elif option == 6:
-            print("\t\t\t   -----------> EXPORT BOOKS <----------")
+            print("\t\t   -----------> EXPORT BOOKS <----------")
             export_to_excel()
         else:  # option == 7
             print("Returning to login dashboard...\n")

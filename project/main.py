@@ -9,10 +9,10 @@ def display_header():
     print("=============================================================================================================================")
     print("                                            WELCOME TO LIBRARY MANAGEMENT SYSTEM")
     print("=============================================================================================================================")
+    print("\n")
 
 def display_login_dashboard():
     """Display the login dashboard options"""
-    print("\n")
     print("===================================================== LOGIN DASHBOARD ======================================================")
     print("                                1. LOGIN                2. LOGOUT                3. EXIT")
     print("=============================================================================================================================")
@@ -20,13 +20,13 @@ def display_login_dashboard():
 def get_dashboard_input():
     """Get user input for dashboard options with validation"""
     while True:
-        choice = input("---> Choose Your Option\t.\t.\t.\t.\t.\t.\t: ").strip()
-        if choice == "":
-            continue  # If no input is provided, simply re_prompt
-        if choice in ['1', '2', '3']:
-            print('')
-            return int(choice)
-        print("---> Invalid option, please try again.\n")
+        try:
+            choice = input("---> Choose Your Option\t.\t.\t.\t.\t.\t.\t: ").strip()
+            if choice in ['1', '2', '3']:
+                return int(choice)
+            print("---> Invalid option. Please enter 1, 2, or 3.")
+        except ValueError:
+            print("---> Invalid input. Please enter a number.")
 
 def main():
     """Main function that runs the application"""
@@ -55,20 +55,23 @@ def main():
         
         if choice == 1:  # Login
             if logged_in:
-                print("\n---> You are already logged in.")
-                input("\nPress Enter to continue...\n")
+                print("\n---> Returning to library management system...\n")
+                print("-" * 60,'\n')
+                
+                # Enter the library management system with the username and specific time
+                exit_code = manageLibrary(username, specific_time)
+                
+                # If exit_code is True, user chose to return to dashboard (option 7)
+                if exit_code is not True:
+                    print("\n---> Unexpected return from library system.")
             else:
                 auth_successful, current_user = authenticate_user()
                 if auth_successful:
                     logged_in = True
                     username = current_user
                     print("-" * 60)
-                    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    print("\nCurrent Date and Time\t\t:", current_time)
-                    print("Current User's Login\t\t:", username)
-                    print()
                     input("\nPress Enter to continue to the Library Management System...\n")
-                    
+                    print("\n")
                     # Enter the library management system with the username and specific time
                     exit_code = manageLibrary(username, specific_time)
                     
@@ -89,7 +92,7 @@ def main():
             input("\nPress Enter to continue...\n")
         
         elif choice == 3:  # Exit
-            print("---> Thank you for using the Library Management System. Goodbye!")
+            print("---> Thank you for using the Library Management System. Goodbye!\n")
             break
 
 if __name__ == "__main__":

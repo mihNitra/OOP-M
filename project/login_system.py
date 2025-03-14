@@ -45,10 +45,21 @@ def login(username, password):
         logging.error("UserAccounts.csv file not found")
         return False
 
+def log_user_not_found(username):
+    """Log when the entered username is not found."""
+    ip_address = get_local_ip()
+    message = (
+        f"Login Failed - User not found\n"
+        f"  Account\t\t\t: {username}\n"
+        f"  IP Address\t: {ip_address}\n"
+        f"  Timestamp\t\t: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+    )
+    logging.warning(message)
+
 def log_login_success(username):
     """Log a successful login attempt."""
     ip_address = get_local_ip()
-    greeting = f"---> Login Successful, Welcome {username}!"
+    greeting = "Login Successful!"
     log_message = (
         f"Login Successful\n"
         f"  Greeting\t\t: {greeting}\n"
@@ -60,7 +71,7 @@ def log_login_success(username):
     print(greeting)
 
 def log_login_failure(username):
-    """---> Log a failed login attempt."""
+    """Log a failed login attempt."""
     ip_address = get_local_ip()
     error_message = "Login Failed, Please Try Again!"
     log_message = (
@@ -87,7 +98,7 @@ def authenticate_user():
     attempt = 0
     
     while attempt < max_attempts:
-        print('================================================= WELCOME TO LOGIN SYSTEM ===================================================\n')
+        print('\n======================================================= LOGIN SYSTEM ========================================================')
         
         username = get_input_with_cancel("- Enter Username\t.\t.\t.\t.\t.\t.\t: ")
         if username is None:
@@ -105,7 +116,8 @@ def authenticate_user():
             log_login_success(username)
             return True, username
         elif result == "not_found":
-            # If user not found, do not count as an attempt; simply re-prompt for credentials.
+            # Log the event and reprompt without counting as an attempt
+            log_user_not_found(username)
             continue
         else:
             attempt += 1
