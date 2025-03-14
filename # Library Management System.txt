@@ -1,0 +1,170 @@
+# Library Management System - Project Requirements
+
+## Project Overview
+
+**Project Name:** Library Management System  
+**Version:** 1.0  
+**Last Updated:** 2025-03-14  
+**Prepared By:** CenJi03  
+
+The Library Management System is a comprehensive solution designed to manage library inventory, track book transactions, and maintain a secure authentication system. The application provides librarians with tools to add, update, search, and remove books while maintaining a complete transaction history for audit purposes.
+
+## Functional Requirements
+
+### 1. Authentication & Security
+
+1.1. **User Authentication**
+   - System shall provide a secure login mechanism using username and password
+   - System shall limit failed login attempts to 3 before denying access
+   - System shall log all login attempts (successful and failed) with timestamps and IP addresses
+   - System shall allow users to logout and terminate their session
+
+1.2. **Session Management**
+   - System shall maintain user session data throughout the application lifecycle
+   - System shall display current user and timestamp information during active sessions
+
+### 2. Book Management
+
+2.1. **Add Books**
+   - System shall allow adding new books with title, author, ISBN, and quantity
+   - System shall detect duplicate ISBNs and allow adding to existing inventory
+   - System shall record each addition as a timestamped transaction
+
+2.2. **View Library Inventory**
+   - System shall display complete library inventory with book details
+   - System shall show current quantity and availability status for each book
+
+2.3. **Search Functionality**
+   - System shall provide ISBN-based book search capability
+   - System shall display detailed information for searched books
+
+2.4. **Update Book Information**
+   - System shall allow updating of book details (title, author, ISBN)
+   - System shall confirm successful updates
+
+2.5. **Remove Books**
+   - System shall support removal of specific quantities or entire stock of books
+   - System shall record removals as negative quantity transactions
+   - System shall require confirmation before completing removal operations
+
+2.6. **Data Export**
+   - System shall export complete library data to Excel format
+   - Export shall include transaction history with timestamps
+
+### 3. Transaction Management
+
+3.1. **Transaction Recording**
+   - System shall maintain a complete history of all inventory changes
+   - System shall timestamp all transactions
+   - System shall categorize transactions (addition, removal)
+   - System shall track the quantity of books in each transaction
+
+## Non-Functional Requirements
+
+### 1. Performance
+
+1.1. **Response Time**
+   - System shall provide immediate feedback for all operations
+   - Search operations shall complete within 2 seconds
+
+1.2. **Capacity**
+   - System shall support a minimum of 10,000 book entries
+   - System shall handle at least 50,000 transaction records
+
+### 2. Reliability & Availability
+
+2.1. **Data Integrity**
+   - System shall prevent data corruption during operations
+   - System shall validate all user inputs
+
+2.2. **Availability**
+   - System shall be available for use during library operating hours (99% uptime)
+
+### 3. Usability
+
+3.1. **User Interface**
+   - System shall provide clear menu options and navigation
+   - System shall implement consistent formatting across all screens
+   - System shall provide clear feedback for all operations
+   - System shall support input cancellation at any prompt
+
+### 4. Security
+
+4.1. **Access Control**
+   - System shall restrict access to authenticated users only
+   - System shall maintain an audit trail of all login attempts
+
+## Technical Specifications
+
+### 1. Software Architecture
+
+1.1. **System Components**
+   - Main Controller (main.py) - Application entry point and session manager
+   - Authentication Layer (login_system.py) - User verification and security
+   - Core Library System (library_system.py) - Book management functionality
+
+1.2. **File Structure**
+   ```
+   Library Management System/
+   ├── main.py                  # Application entry point
+   ├── login_system.py          # Authentication module
+   ├── library_system.py        # Core library functionality
+   ├── UserInfo/                # User data directory
+   │   └── UserAccounts.csv     # User credentials
+   ├── logs/                    # Application logs
+   │   └── login.log            # Authentication activity
+   └── LibraryBooks.xlsx        # Exported book data (generated)
+   ```
+
+### 2. Technology Stack
+
+2.1. **Programming Language**
+   - Python 3.7+
+
+2.2. **Dependencies**
+   - xlsxwriter (for Excel export)
+   - Standard Python libraries (csv, datetime, os, socket, logging)
+
+2.3. **Data Storage**
+   - User credentials: CSV file storage
+   - Transaction logs: Text file logging
+   - Book export: Excel (.xlsx) format
+
+## User Roles and Permissions
+
+### 1. Administrator
+   - Full system access
+   - Can manage all library functions
+   - Can view system logs
+
+### 2. Future Role Consideration
+   - Librarian: Book management only (no system administration)
+   - Reader: Search and view capabilities only
+
+## Deployment Requirements
+
+### 1. System Requirements
+   - Operating System: Windows 10/11, macOS 10.14+, or Linux
+   - Python 3.7 or higher
+   - Minimum 4GB RAM
+   - 100MB available disk space
+
+### 2. Installation
+   - Python environment with required packages
+   - Directory structure as specified in Technical Specifications
+   - Default admin account creation on first run
+
+### 3. Maintenance
+   - Regular backup of UserAccounts.csv and log files
+   - Periodic review of login logs for security monitoring
+
+## Future Enhancements
+
+### Phase 2 Considerations
+   - Database integration for improved data persistence
+   - User management interface for creating and managing accounts
+   - Book borrowing and return system
+   - Due date tracking and notifications
+   - Advanced search capabilities (by title, author, etc.)
+   - Barcode scanning integration
+   - Web or GUI interface
