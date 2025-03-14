@@ -1,10 +1,6 @@
-"""
-Library Management System - Main Module
-"""
-
 import os
 import datetime
-from login_system import authenticate_user
+from login_system import authenticate_user, log_login_success
 from library_system import manageLibrary
 
 def display_header():
@@ -13,20 +9,24 @@ def display_header():
     print("=============================================================================================================================")
     print("                                            WELCOME TO LIBRARY MANAGEMENT SYSTEM")
     print("=============================================================================================================================")
-    print("\n")
 
-def display_user_info(username):
-    """Display current date/time and logged in user"""
-    # Get current UTC time using timezone-aware approach (avoiding deprecation warning)
-    try:
-        # For Python 3.11+ which has datetime.UTC
-        current_time = datetime.datetime.now(datetime.UTC).strftime('%Y-%m-%d %H:%M:%S')
-    except AttributeError:
-        # For older Python versions
-        current_time = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d %H:%M:%S')
-        
-    print(f"Current Date and Time\t.\t: {current_time}")
-    print(f"Current User's Login\t.\t: {username}")
+def display_login_dashboard():
+    """Display the login dashboard options"""
+    print("\n")
+    print("===================================================== LOGIN DASHBOARD ======================================================")
+    print("                                1. LOGIN                2. LOGOUT                3. EXIT")
+    print("=============================================================================================================================")
+
+def get_dashboard_input():
+    """Get user input for dashboard options with validation"""
+    while True:
+        choice = input("---> Choose Your Option\t.\t.\t.\t.\t.\t.\t: ").strip()
+        if choice == "":
+            continue  # If no input is provided, simply re_prompt
+        if choice in ['1', '2', '3']:
+            print('')
+            return int(choice)
+        print("---> Invalid option, please try again.\n")
 
 def main():
     """Main function that runs the application"""
@@ -39,23 +39,58 @@ def main():
         print("Creating sample user accounts file...")
         with open('UserInfo/UserAccounts.csv', 'w', newline='') as f:
             f.write("admin,admin\n")
-        print("Sample user accounts created. You can use admin/admin123 to login.")
     
     display_header()
     
-    # Authenticate the user first
-    auth_successful, username = authenticate_user()
+    # Set specific date/time for display - updated to the requested time
+    specific_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
-    if auth_successful:
-        # Display user info but remove the "Access granted" message
-        display_user_info(username)
-        print("-" * 60)
-        input("\nPress any key to continue to the Library Management System...\n")
+    # Initialize login state
+    logged_in = False
+    username = None
+    
+    while True:
+        display_login_dashboard()
+        choice = get_dashboard_input()
         
-        # If authentication is successful, proceed to library management
-        manageLibrary()
-    else:
-        print("\nAccess denied. Please contact the system administrator.")
+        if choice == 1:  # Login
+            if logged_in:
+                print("\n---> You are already logged in.")
+                input("\nPress Enter to continue...\n")
+            else:
+                auth_successful, current_user = authenticate_user()
+                if auth_successful:
+                    logged_in = True
+                    username = current_user
+                    print("-" * 60)
+                    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    print("\nCurrent Date and Time\t\t:", current_time)
+                    print("Current User's Login\t\t:", username)
+                    print()
+                    input("\nPress Enter to continue to the Library Management System...\n")
+                    
+                    # Enter the library management system with the username and specific time
+                    exit_code = manageLibrary(username, specific_time)
+                    
+                    # If exit_code is True, user chose to return to dashboard (option 7)
+                    if exit_code is not True:
+                        print("\n---> Unexpected return from library system.")
+                else:
+                    print("\n---> Login failed. Please try again.")
+                    input("\nPress Enter to continue...\n")
+        
+        elif choice == 2:  # Logout
+            if logged_in:
+                print(f"---> Goodbye, {username}! You have been logged out.")
+                logged_in = False
+                username = None
+            else:
+                print("\n---> You are not currently logged in.")
+            input("\nPress Enter to continue...\n")
+        
+        elif choice == 3:  # Exit
+            print("---> Thank you for using the Library Management System. Goodbye!")
+            break
 
 if __name__ == "__main__":
-    main()   
+    main()

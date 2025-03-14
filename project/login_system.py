@@ -1,10 +1,3 @@
-"""
-Library Management System - Login Module
-----------------------------------------
-Current Date and Time (UTC): 2025-03-12 02:32:02
-Current User's Login: CenJi03
-"""
-
 import csv
 import logging
 import datetime
@@ -18,10 +11,6 @@ os.makedirs('logs', exist_ok=True)
 logging.basicConfig(filename='logs/login.log', 
                     level=logging.INFO,
                     format='%(asctime)s - %(message)s')
-
-# Get the hostname and IP address of the machine
-hostname = socket.gethostname()
-IPAddr = socket.gethostbyname(hostname)
 
 def get_local_ip():
     """Retrieve the local IP address of the computer."""
@@ -38,17 +27,28 @@ def get_local_ip():
 
 def login(username, password):
     """Authenticate the user using credentials from a CSV file."""
-    with open("UserInfo/UserAccounts.csv", newline='') as csvfile:
-        reader = csv.reader(csvfile)
-        for row in reader:
-            if username == row[0] and password == row[1]:
-                return True
-    return False
+    try:
+        with open("UserInfo/UserAccounts.csv", newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            user_found = False
+            for row in reader:
+                if username == row[0]:
+                    user_found = True
+                    if password == row[1]:
+                        return True
+                    else:
+                        return False
+            if not user_found:
+                print("---> User not found.")
+                return "not_found"
+    except FileNotFoundError:
+        logging.error("UserAccounts.csv file not found")
+        return False
 
 def log_login_success(username):
     """Log a successful login attempt."""
     ip_address = get_local_ip()
-    greeting = f"Login Successful, Welcome {username}!"
+    greeting = f"---> Login Successful, Welcome {username}!"
     log_message = (
         f"Login Successful\n"
         f"  Greeting\t\t: {greeting}\n"
@@ -60,7 +60,7 @@ def log_login_success(username):
     print(greeting)
 
 def log_login_failure(username):
-    """Log a failed login attempt."""
+    """---> Log a failed login attempt."""
     ip_address = get_local_ip()
     error_message = "Login Failed, Please Try Again!"
     log_message = (
@@ -73,21 +73,40 @@ def log_login_failure(username):
     logging.warning(log_message)
     print(error_message)
 
+def get_input_with_cancel(prompt):
+    """Get input with cancel option."""
+    user_input = input(prompt + "").strip()
+    if user_input.lower() in ["cancel", "exit", "quit", "esc"]:
+        print("\n---> Operation cancelled")
+        return None
+    return user_input
+
 def authenticate_user():
     """Handle the user authentication process and return success status and username"""
     max_attempts = 3
     attempt = 0
     
     while attempt < max_attempts:
-        print('======================================================= LOGIN SYSTEM ========================================================')
-        username = input("- Enter Username\t.\t.\t.\t.\t.\t.\t: ")
-        password = input("- Enter Password\t.\t.\t.\t.\t.\t.\t: ")
+        print('================================================= WELCOME TO LOGIN SYSTEM ===================================================\n')
+        
+        username = get_input_with_cancel("- Enter Username\t.\t.\t.\t.\t.\t.\t: ")
+        if username is None:
+            return False, None
+            
+        password = get_input_with_cancel("- Enter Password\t.\t.\t.\t.\t.\t.\t: ")
+        if password is None:
+            return False, None
+            
         print('\t')
         
         # Authenticate the user
-        if login(username, password):
+        result = login(username, password)
+        if result is True:
             log_login_success(username)
             return True, username
+        elif result == "not_found":
+            # If user not found, do not count as an attempt; simply re-prompt for credentials.
+            continue
         else:
             attempt += 1
             log_login_failure(username)

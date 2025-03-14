@@ -1,12 +1,6 @@
-2025-03-13 14:06:01,825 - Login Successful
-  Greeting		: Login Successful, Welcome admin!
+2025-03-14 13:17:59,247 - Login Successful
+  Greeting		: ---> Login Successful, Welcome admin!
   Account			: admin
-  IP Address	: 174.16.10.103
-  Timestamp		: 2025-03-13 14:06:01
-
-2025-03-13 14:07:21,389 - Login Successful
-  Greeting		: Login Successful, Welcome admin!
-  Account			: admin
-  IP Address	: 174.16.10.103
-  Timestamp		: 2025-03-13 14:07:21
+  IP Address	: 192.168.1.233
+  Timestamp		: 2025-03-14 13:17:59
 
