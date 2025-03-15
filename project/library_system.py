@@ -126,7 +126,7 @@ def addBook():
 # Function to check all books in the library
 def checkLibrary():
     if not addBooks:
-        print("\n\t\t\t   -------> NO BOOKS IN LIBRARY <-------\n")
+        print("\n\t\t   -------> NO BOOKS IN LIBRARY <-------\n")
         return
 
     print("- Books in the library: \n")
@@ -306,7 +306,7 @@ def manageLibrary(username, current_time):
             "    1. ADD BOOK    2. CHECK LIBRARY    3. SEARCH BOOK    4. UPDATE BOOK    5. REMOVE BOOK    6. EXPORT BOOKS    7. EXIT")
         print(
             "======================================================== INSTRUCTION ========================================================")
-
+        print("To Exit Any Operation, Type 'esc'\n")
         option = get_input("---> Choose Your Option\t.\t.\t.\t.\t.\t.\t: ", int, choices=range(1, 8))
         if option is None:  # User cancelled
             print("Exiting Library Management...\n")

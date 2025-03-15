@@ -100,13 +100,17 @@ def authenticate_user():
     while attempt < max_attempts:
         print('\n======================================================= LOGIN SYSTEM ========================================================')
         
-        username = get_input_with_cancel("- Enter Username\t.\t.\t.\t.\t.\t.\t: ")
-        if username is None:
-            return False, None
-            
-        password = get_input_with_cancel("- Enter Password\t.\t.\t.\t.\t.\t.\t: ")
-        if password is None:
-            return False, None
+        username = None
+        while not username:
+            username = get_input_with_cancel("- Enter Username\t.\t.\t.\t.\t.\t.\t: ")
+            if username is None:
+                return False, None
+        
+        password = None
+        while not password:
+            password = get_input_with_cancel("- Enter Password\t.\t.\t.\t.\t.\t.\t: ")
+            if password is None:
+                return False, None
             
         print('\t')
         

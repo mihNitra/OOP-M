@@ -20,13 +20,12 @@ def display_login_dashboard():
 def get_dashboard_input():
     """Get user input for dashboard options with validation"""
     while True:
-        try:
-            choice = input("---> Choose Your Option\t.\t.\t.\t.\t.\t.\t: ").strip()
-            if choice in ['1', '2', '3']:
-                return int(choice)
-            print("---> Invalid option. Please enter 1, 2, or 3.")
-        except ValueError:
-            print("---> Invalid input. Please enter a number.")
+        choice = input("---> Choose Your Option\t.\t.\t.\t.\t.\t.\t: ").strip()
+        if choice == "":
+            continue  # Reprompt if nothing was entered
+        if choice in ['1', '2', '3']:
+            return int(choice)
+        print("---> Invalid option. Please enter 1, 2, or 3.\n")
 
 def main():
     """Main function that runs the application"""
@@ -92,7 +91,7 @@ def main():
             input("\nPress Enter to continue...\n")
         
         elif choice == 3:  # Exit
-            print("---> Thank you for using the Library Management System. Goodbye!\n")
+            print("\n---> Thank you for using the Library Management System. Goodbye!\n")
             break
 
 if __name__ == "__main__":
